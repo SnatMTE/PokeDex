@@ -1,4 +1,7 @@
-// PokemonPokedexApp.js
+// Created by Snat
+// This is a simple React Native app that allows users to select a Pokémon region and view Pokémon details.
+// It uses the PokeAPI to fetch Pokémon data based on the selected region.
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
+// Define the regions and their corresponding Pokémon ID ranges
 const REGIONS = {
   "Kanto": [1, 151],
   "Johto": [152, 251],
@@ -18,6 +22,7 @@ const REGIONS = {
   "Paldea": [899, 1010],
 };
 
+// Component to select a region
 function RegionSelector({ navigation }) {
   return (
     <View style={{ padding: 20 }}>
@@ -33,9 +38,13 @@ function RegionSelector({ navigation }) {
   );
 }
 
+// Component to display the list of Pokémon in the selected region
 function PokemonList({ route, navigation }) {
   const { region } = route.params;
   const [pokemonList, setPokemonList] = useState([]);
+
+  // Fetch Pokémon data based on the selected region
+  // This will fetch Pokémon from the specified ID range for the selected region
 
   useEffect(() => {
     const [start, end] = REGIONS[region];
@@ -50,6 +59,8 @@ function PokemonList({ route, navigation }) {
     fetchPokemon();
   }, [region]);
 
+  // Render the list of Pokémon using FlatList
+  // Each item will be a TouchableOpacity that navigates to the Pokémon details page
   return (
     <FlatList
       data={pokemonList}
@@ -65,6 +76,9 @@ function PokemonList({ route, navigation }) {
     />
   );
 }
+
+// Component to display the details of a selected Pokémon
+// This component will show the Pokémon's name, sprite, height, weight, types
 
 function PokemonDetails({ route, navigation }) {
   const { pokemon } = route.params;
@@ -116,6 +130,9 @@ function PokemonDetails({ route, navigation }) {
     </ScrollView>
   );
 }
+
+// Main App component with navigation setup
+// This component sets up the navigation stack and renders the initial screen
 
 export default function App() {
   return (
